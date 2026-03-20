@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
       args:
         USER_NAME: cp
-        USER_UID: ${CONTAINER_USER_UID:-1000}
-        USER_GID: ${CONTAINER_USER_GID:-1000}
+        USER_UID: ${CONTAINER_USER_UID:-10001}
+        USER_GID: ${CONTAINER_USER_GID:-10001}
     working_dir: /workspace
     init: true
     tty: true
