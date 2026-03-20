@@ -1,0 +1,15 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+compose.override.yaml
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+.vscode/
+.idea/
+target/

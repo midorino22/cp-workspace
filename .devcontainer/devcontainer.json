@@ -1,0 +1,19 @@
+{
+  "name": "cp-dev",
+  "dockerComposeFile": [
+    "../compose.yaml"
+  ],
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "cp",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "rust-lang.rust-analyzer"
+      ]
+    }
+  }
+}
