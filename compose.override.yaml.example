@@ -1,0 +1,9 @@
+services:
+  dev:
+    ports:
+      # Add additional local-only ports for visualizers/debug servers as needed.
+      - "127.0.0.1:18080:18080"
+      - "127.0.0.1:19000:19000"
+
+    # For x86-only tools, uncomment only when needed.
+    # platform: linux/amd64
