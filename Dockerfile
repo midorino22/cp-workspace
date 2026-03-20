@@ -25,8 +25,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user for daily development.
-RUN groupadd --gid "${USER_GID}" "${USER_NAME}" \
-    && useradd --uid "${USER_UID}" --gid "${USER_GID}" -m -s /bin/bash "${USER_NAME}"
+RUN if getent group "${USER_GID}" >/dev/null; then \
+        EXISTING_GROUP="$(getent group "${USER_GID}" | cut -d: -f1)"; \
+    else \
+        groupadd --gid "${USER_GID}" "${USER_NAME}"; \
+        EXISTING_GROUP="${USER_NAME}"; \
+    fi \
+    && useradd --uid "${USER_UID}" --gid "${EXISTING_GROUP}" -m -s /bin/bash "${USER_NAME}"
 
 USER ${USER_NAME}
 WORKDIR /workspace
