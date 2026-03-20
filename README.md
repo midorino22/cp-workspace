@@ -46,3 +46,4 @@ C++ / Python / Rust をホストを汚さずに使うための、単一サービ
 - `Dockerfile` は apt セクションを伸ばすだけでツール追加しやすい構成
 - `Dockerfile` から `sudo NOPASSWD` は削除し、初期状態を安全寄りに調整
 - `compose.yaml` / `Dockerfile` / `.devcontainer` の構成は相互に整合する
+- デフォルトUID/GIDは `10001`（重複しにくい値）。必要なら `.env` の `CONTAINER_USER_UID` / `CONTAINER_USER_GID` で上書き可能
