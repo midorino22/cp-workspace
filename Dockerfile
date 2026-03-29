@@ -1,9 +1,7 @@
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG USER_NAME=cp
-ARG USER_UID=10001
-ARG USER_GID=10001
+ARG APPUSER=root
 
 # Base packages for competitive programming development.
 # Add future tools by extending this apt install block.
@@ -24,24 +22,14 @@ RUN apt-get update \
         unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user for daily development.
-RUN if getent group "${USER_GID}" >/dev/null; then \
-        EXISTING_GROUP="$(getent group "${USER_GID}" | cut -d: -f1)"; \
-    else \
-        groupadd --gid "${USER_GID}" "${USER_NAME}"; \
-        EXISTING_GROUP="${USER_NAME}"; \
-    fi \
-    && if getent passwd "${USER_UID}" >/dev/null; then \
-        echo "ERROR: UID ${USER_UID} already exists. Set a different USER_UID/CONTAINER_USER_UID."; \
-        exit 1; \
-    fi \
-    && useradd --uid "${USER_UID}" --gid "${EXISTING_GROUP}" -m -s /bin/bash "${USER_NAME}"
-
-USER ${USER_NAME}
+USER root
 WORKDIR /workspace
 
-# Install Rust toolchain for the non-root user.
-ENV PATH="/home/${USER_NAME}/.cargo/bin:${PATH}"
+# Expose selected app user as env for tools/scripts.
+ENV APPUSER=${APPUSER}
+
+# Install Rust toolchain for root user.
+ENV PATH="/root/.cargo/bin:${PATH}"
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --profile minimal --default-toolchain stable
 

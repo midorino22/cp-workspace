@@ -4,17 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        USER_NAME: cp
-        USER_UID: ${CONTAINER_USER_UID:-10001}
-        USER_GID: ${CONTAINER_USER_GID:-10001}
+        APPUSER: root
     working_dir: /workspace
     init: true
     tty: true
     stdin_open: true
+    environment:
+      APPUSER: root
     volumes:
       - ./:/workspace
-      - cargo-registry:/home/cp/.cargo/registry
-      - rustup-home:/home/cp/.rustup
+      - cargo-registry:/root/.cargo/registry
+      - rustup-home:/root/.rustup
     ports:
       - "127.0.0.1:${VIS_PORT_HOST:-8080}:${VIS_PORT_CONTAINER:-8080}"
     command: ["sleep", "infinity"]
