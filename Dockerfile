@@ -42,6 +42,7 @@ WORKDIR /workspace
 
 # Install Rust toolchain for the non-root user.
 ENV PATH="/home/${USER_NAME}/.cargo/bin:${PATH}"
-RUN curl https://sh.rustup.rs -sSf | bash -s -- -y --profile minimal --default-toolchain stable
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+    | sh -s -- -y --profile minimal --default-toolchain stable
 
 CMD ["sleep", "infinity"]
