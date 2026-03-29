@@ -31,7 +31,7 @@ C++ / Python / Rust をホストを汚さずに使うための、単一サービ
 ## VS Code Dev Container
 
 - `.devcontainer/devcontainer.json` は `compose.yaml` の `dev` サービスをそのまま利用
-- `remoteUser` は non-root ユーザー `cp` に固定
+- `remoteUser` は `root`（管理者ユーザー）に固定
 - Apple Silicon では `platform` 未固定のため arm64 ネイティブで動作
 - x86 専用ツールが必要なときだけ `compose.override.yaml` の `platform: linux/amd64` コメントを有効化
 
@@ -40,10 +40,10 @@ C++ / Python / Rust をホストを汚さずに使うための、単一サービ
 - ソースコードは `./:/workspace` の bind mount で共有
 - ポート公開は `127.0.0.1` に限定し、ホスト側ポートは `.env` で変更可能
 - 追加ポートや x86 切り替えは `compose.override.yaml` 側で拡張しやすい
-- 通常ユーザーは non-root (`cp`)
+- 通常ユーザーは `root`（管理者権限）
 - `init: true` で PID 1 の signal handling / zombie 回収を安定化
 - Rust のツールチェーン・キャッシュは named volume で永続化
 - `Dockerfile` は apt セクションを伸ばすだけでツール追加しやすい構成
-- `Dockerfile` から `sudo NOPASSWD` は削除し、初期状態を安全寄りに調整
+- `APPUSER=root` を明示し、スクリプトから利用できるように環境変数を設定
 - `compose.yaml` / `Dockerfile` / `.devcontainer` の構成は相互に整合する
-- デフォルトUID/GIDは `10001`（重複しにくい値）。必要なら `.env` の `CONTAINER_USER_UID` / `CONTAINER_USER_GID` で上書き可能
+- Rust のキャッシュは `/root` 配下の named volume に保存
